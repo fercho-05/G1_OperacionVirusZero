@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Boss : MonoBehaviour
@@ -148,7 +150,7 @@ public class Boss : MonoBehaviour
                             ani.SetBool("run", false);
                             ani.SetBool("attack", true);
                             ani.SetFloat("skills", 0.07619049f);
-                            rango.GetComponent <CapsuleCollider>().enabled = false;
+                            rango.GetComponent<CapsuleCollider>().enabled = false;
                             transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 0.5f);
                         }
                         else
@@ -183,30 +185,33 @@ public class Boss : MonoBehaviour
         direction_Skill = false;
     }
 
-  
-public void ColliderWeaponTrue()
+
+    public void ColliderWeaponTrue()
     {
-        if (hit_Select >= 0 && hit_Select < hit.Length)
+        if (hit != null && hit_Select >= 0 && hit_Select < hit.Length && hit[hit_Select] != null)
         {
             hit[hit_Select].GetComponent<SphereCollider>().enabled = true;
         }
         else
         {
-            Debug.LogError("Índice hit_Select fuera de los límites del arreglo hit.");
+            // No hacer nada si hit o hit[hit_Select] es nulo o si hit_Select está fuera de los límites
+            // Esto evitará que se produzcan errores innecesarios en la consola
         }
     }
 
     public void ColliderWeaponFalse()
     {
-        if (hit_Select >= 0 && hit_Select < hit.Length)
+        if (hit != null && hit_Select >= 0 && hit_Select < hit.Length && hit[hit_Select] != null)
         {
             hit[hit_Select].GetComponent<SphereCollider>().enabled = false;
         }
         else
         {
-            Debug.LogError("Índice hit_Select fuera de los límites del arreglo hit.");
+            // No hacer nada si hit o hit[hit_Select] es nulo o si hit_Select está fuera de los límites
+            // Esto evitará que se produzcan errores innecesarios en la consola
         }
     }
+
 
     //lanzallamas 
     public GameObject GetBala()
@@ -256,7 +261,7 @@ public void ColliderWeaponTrue()
                 return pool2[i];
             }
         }
-        GameObject obj = Instantiate(fire_ball, point.transform.position, point.transform.rotation)as GameObject;
+        GameObject obj = Instantiate(fire_ball, point.transform.position, point.transform.rotation) as GameObject;
         pool2.Add(obj);
         return obj;
     }
@@ -283,7 +288,7 @@ public void ColliderWeaponTrue()
         }
     }
 
-     void Update()
+    void Update()
     {
         barra.fillAmount = HP_Min / HP_Max;
         if (HP_Min > 0)
@@ -297,8 +302,18 @@ public void ColliderWeaponTrue()
                 ani.SetTrigger("dead");
                 musica.enabled = false;
                 muerto = true;
+                StartCoroutine(CargarEscenaYouWinDespuesDeEspera(5f)); 
             }
         }
 
+    }
+
+
+private IEnumerator CargarEscenaYouWinDespuesDeEspera(float espera)
+    {
+        yield return new WaitForSeconds(espera);
+
+        // Cargar la escena de "YouWin"
+        SceneManager.LoadScene("YouWin");
     }
 }
