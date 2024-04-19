@@ -1,4 +1,6 @@
 ﻿ using UnityEngine;
+using UnityEngine.UI;
+
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -87,6 +89,10 @@ namespace StarterAssets
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
 
+        public float HP_Min;
+        public float HP_Max;
+        public Image barra;
+
         // timeout deltatime
         private float _jumpTimeoutDelta;
         private float _fallTimeoutDelta;
@@ -152,15 +158,17 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
         }
 
-        private void Update()
+        void Update()
         {
+            barra.fillAmount = HP_Min / HP_Max;
             _hasAnimator = TryGetComponent(out _animator);
 
             JumpAndGravity();
             GroundedCheck();
-            Move();
+            Move();     
+            
         }
-
+      
         private void LateUpdate()
         {
             CameraRotation();
