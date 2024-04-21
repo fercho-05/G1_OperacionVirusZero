@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     public float maxHealth = 100f;
-    private float currentHealth;
+
+    [SerializeField]
+    float currentHealth;
 
     private void Start()
     {
@@ -15,7 +18,6 @@ public class PlayerHealth : MonoBehaviour
         if (IsAlive())
         {
             currentHealth -= damage;
-            // Aquí puedes agregar efectos visuales, sonidos, etc., cuando el jugador recibe daño
         }
 
         if (!IsAlive())
@@ -31,8 +33,18 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        // Lógica para la muerte del jugador
         Debug.Log("Player has died!");
-        // Aquí puedes agregar más acciones al morir, como reiniciar el nivel, mostrar pantalla de Game Over, etc.
+        SceneManager.LoadScene("GameOver");
     }
+
+    public void TakeDamageOfZombies(float damage)
+    {
+        currentHealth -= Mathf.Abs(damage);
+
+        if (currentHealth <= 0.0F)
+        {
+            Die();
+        }
+    }
+
 }

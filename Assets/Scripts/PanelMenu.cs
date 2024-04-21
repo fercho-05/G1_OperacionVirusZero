@@ -9,4 +9,13 @@ public class PanelMenu : MonoBehaviour
     {
         SceneManager.LoadScene("MainMap");
     }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExitPlaymode(); // Salir del modo de juego en el editor
+#else
+        Application.Quit(); // Salir del juego en una build final
+#endif
+    }
 }
