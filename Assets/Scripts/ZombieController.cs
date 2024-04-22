@@ -3,46 +3,46 @@ using UnityEngine.AI;
 
 public class ZombieController : MonoBehaviour
 {
-    [SerializeField]
-    float minChaseDistance;
+    public float minChaseDistance = 20f;
+    public float attackDistance = 3f;
+    public string targetTag = "Player";
+    public float distanceToTarget;
 
-    [SerializeField]
-    float attackDistance;
+    private GameObject target;
+    private NavMeshAgent navAgent;
+    private Animator animator;
+    private bool isAttacking;
 
-    [SerializeField]
-    float damage;
-
-    [SerializeField]
-    Animator animator;
-
-    GameObject player; // Cambiado de target a player
-
-    public float distanceToPlayer;
-    NavMeshAgent navAgent;
-
-    void Start()
+    private void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-
-        // Buscar el objeto del jugador al inicio
-        player = GameObject.FindGameObjectWithTag("Player");
+        target = FindObjectByLayer(targetTag);
     }
 
-    void Update()
+    private GameObject FindObjectByLayer(string layerName)
     {
-        if (player != null)
+        GameObject[] objects = GameObject.FindObjectsOfType<GameObject>();
+        foreach (GameObject obj in objects)
         {
-            // Actualizar la distancia al jugador
-            distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-
-            if (distanceToPlayer <= minChaseDistance)
+            if (obj.layer == LayerMask.NameToLayer(layerName))
             {
-                ChasePlayer();
-                if (distanceToPlayer <= attackDistance)
-                {
-                    AttackPlayer();
-                }
+                return obj;
+            }
+        }
+        return null;
+    }
+
+    private void Update()
+    {
+        if (target != null)
+        {
+            target = FindObjectByLayer(targetTag);
+            distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+
+            if (distanceToTarget <= minChaseDistance)
+            {
+                ChaseOrAttackTarget();
             }
             else
             {
@@ -51,22 +51,44 @@ public class ZombieController : MonoBehaviour
         }
     }
 
-    void ChasePlayer()
+    private void ChaseOrAttackTarget()
     {
-        //navAgent.SetDestination(player.transform.position);
+        if (distanceToTarget <= attackDistance)
+        {
+            AttackTarget();
+        }
+        else
+        {
+            ChaseTarget();
+        }
+    }
+
+    private void ChaseTarget()
+    {
+        navAgent.SetDestination(target.transform.position);
         animator.SetBool("IsWalking", true);
         animator.SetBool("IsAttacking", false);
     }
 
-    void StopChasing()
+    private void StopChasing()
     {
+        navAgent.ResetPath();
         animator.SetBool("IsWalking", false);
         animator.SetBool("IsAttacking", false);
     }
 
-    void AttackPlayer()
+    private void AttackTarget()
     {
-        //navAgent.SetDestination(transform.position); // Detenerse al atacar
-        animator.SetBool("IsAttacking", true);
+        if (!isAttacking)
+        {
+            isAttacking = true;
+            navAgent.ResetPath();
+            animator.SetBool("IsAttacking", true);
+        }
+    }
+
+    public void FinishAttack()
+    {
+        isAttacking = false;
     }
 }
