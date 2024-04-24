@@ -8,6 +8,8 @@ TagManager:
   - FinalGamePortal
   - Boss
   - PJ
+  - Undefined
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX

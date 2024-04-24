@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -8,9 +9,17 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     float currentHealth;
 
+    [SerializeField]
+    Image healthBar;
+
     private void Start()
     {
         currentHealth = maxHealth;
+    }
+
+    private void Update()
+    {
+        healthBar.fillAmount = currentHealth / maxHealth;
     }
 
     public void TakeDamage(float damage)
@@ -46,5 +55,8 @@ public class PlayerHealth : MonoBehaviour
             Die();
         }
     }
+
+    
+    
 
 }

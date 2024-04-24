@@ -19,11 +19,29 @@ public class EnemyController : MonoBehaviour
 
     Animator _animator;
 
+
+    [SerializeField]
+    Transform shootPoint;
+
+    [SerializeField]
+    LayerMask whatIsPlayer;
+
+    [SerializeField]
+    GameObject enemyBullet;
+
+    [SerializeField]
+    float lifeTime;
+
+    [SerializeField]
+    float force;
+
+
     private void Awake()
     {
         _navAgent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
     }
+
 
     private void Update()
     {
@@ -33,11 +51,10 @@ public class EnemyController : MonoBehaviour
 
         _animator.SetBool("Walk", false);
 
-        if (distance <= 10.0) //Buscar al jugador solo cuando este se acerque
+        if (distance <= 17.0) //Buscar al jugador solo cuando este se acerque
         {
             _navAgent.SetDestination(target.position); //Buscar al jugador
             _animator.SetBool("Walk", true); //Iniciar caminata
-
 
             if (distance <= _minDistanceToAttack) //Hacer daño cuando ya esté cerca del jugador
             {
@@ -45,7 +62,15 @@ public class EnemyController : MonoBehaviour
                 if (_damageTimer <= 0.0F)
                 {
                     _damageTimer = 5.0F; //Hace daño cada 5 segundos
+
+
+                    GameObject bullet = Instantiate(enemyBullet, shootPoint.position, shootPoint.rotation);
+                    Rigidbody rigidbody = bullet.GetComponent<Rigidbody>();
+                    rigidbody.AddForce(bullet.transform.forward * force, ForceMode.Force);
+                    Destroy(bullet, lifeTime);
+
                     
+
                     //PlayerHealthController playerHealthController = target.GetComponent<PlayerHealthController>();
 
                     //if (playerHealthController != null)
