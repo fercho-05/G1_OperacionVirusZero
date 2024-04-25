@@ -10,16 +10,15 @@ public class PlayerHealth : MonoBehaviour
     float currentHealth;
 
     [SerializeField]
-<<<<<<< Updated upstream
     Image healthBar;
-=======
+
     float healthMedKit;
 
     [SerializeField]
     Image healtBar;
 
     bool valMedkit;
->>>>>>> Stashed changes
+
 
     private void Start()
     {
@@ -28,14 +27,10 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-<<<<<<< Updated upstream
         healthBar.fillAmount = currentHealth / maxHealth;
     }
 
-=======
-        healtBar.fillAmount = currentHealth / maxHealth;
-    }
->>>>>>> Stashed changes
+
     public void TakeDamage(float damage)
     {
         if (IsAlive())
@@ -70,10 +65,6 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-<<<<<<< Updated upstream
-    
-    
-=======
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player")
@@ -89,6 +80,4 @@ public class PlayerHealth : MonoBehaviour
             healthMedKit += currentHealth;
         }        
     }
->>>>>>> Stashed changes
-
 }
