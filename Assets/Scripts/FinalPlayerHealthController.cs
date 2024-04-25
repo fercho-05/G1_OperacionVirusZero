@@ -15,6 +15,7 @@ public class FinalPlayerHealthController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            Debug.Log("¡¡Recogiste un medkit!!, obtuviste un total de: " + healthMedKit + " de HP.");
             other.GetComponent<ThirdPersonController>().HP_Min += healthMedKit;
             if (MedkitSelected)
             {

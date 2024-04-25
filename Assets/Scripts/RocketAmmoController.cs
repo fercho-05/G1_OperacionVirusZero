@@ -20,6 +20,7 @@ public class RocketAmmoController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            Debug.Log("¡¡Recogiste la munición del para la basuca!!");
             rocketAmmo.rockets += 1;
             if (AmmoSelected)
             {

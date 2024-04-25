@@ -12,10 +12,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField]
     Image healthBar;
 
-    float healthMedKit;
-
-    [SerializeField]
-    Image healtBar;
+    float healthProbeta = 0;
 
     bool valMedkit;
 
@@ -65,19 +62,23 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag == "Player")
-        {
-            RestoreHealth(true);
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if(other.gameObject.tag == "Player")
+    //    {
+    //        RestoreHealth(true);
+    //    }
+    //}
+
     public void RestoreHealth(bool takeMedkit)
     {
+        Debug.Log("¡¡Se entro al proceso de recuperación!!");
         valMedkit = takeMedkit;
         if (valMedkit)
         {
-            healthMedKit += currentHealth;
+            healthProbeta = 25;
+			Debug.Log(healthProbeta);
+			currentHealth += healthProbeta;
         }        
     }
 }

@@ -1,5 +1,6 @@
 ﻿ using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
@@ -167,6 +168,10 @@ namespace StarterAssets
             GroundedCheck();
             Move();     
             
+            if(barra.fillAmount <= 0)
+            {
+				SceneManager.LoadScene("GameOver");
+			}
         }
       
         private void LateUpdate()
