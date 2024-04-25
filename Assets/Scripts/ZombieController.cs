@@ -4,9 +4,10 @@ using UnityEngine.AI;
 public class ZombieController : MonoBehaviour
 {
     public float minChaseDistance = 20f;
-    public float attackDistance = 3f;
+    public float attackDistance = 1f;
     public string targetTag = "Player";
-    public float distanceToTarget;
+    public float damage = 10f;
+    public float damageTimer; // Tiempo de espera entre ataques
 
     private GameObject target;
     private NavMeshAgent navAgent;
@@ -35,14 +36,16 @@ public class ZombieController : MonoBehaviour
 
     private void Update()
     {
+        damageTimer -= Time.deltaTime;
+
         if (target != null)
         {
             target = FindObjectByLayer(targetTag);
-            distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+            float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 
             if (distanceToTarget <= minChaseDistance)
             {
-                ChaseOrAttackTarget();
+                ChaseOrAttackTarget(distanceToTarget);
             }
             else
             {
@@ -51,11 +54,11 @@ public class ZombieController : MonoBehaviour
         }
     }
 
-    private void ChaseOrAttackTarget()
+    private void ChaseOrAttackTarget(float distanceToTarget)
     {
         if (distanceToTarget <= attackDistance)
         {
-            AttackTarget();
+            return;
         }
         else
         {
@@ -83,7 +86,28 @@ public class ZombieController : MonoBehaviour
         {
             isAttacking = true;
             navAgent.ResetPath();
+            animator.SetBool("IsWalking", false);
             animator.SetBool("IsAttacking", true);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        
+        if (other.gameObject.CompareTag("Player"))
+        {
+
+            AttackTarget();
+
+            if (damageTimer <= 0)
+            {
+                PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+                Debug.Log("2");
+                playerHealth.TakeDamage(damage);
+                damageTimer = 5;
+            }
+
         }
     }
 
