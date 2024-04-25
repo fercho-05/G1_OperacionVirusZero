@@ -10,8 +10,12 @@ namespace StarterAssets
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
+
 		public bool jump;
 		public bool sprint;
+		public bool attack;
+		public bool switchLeft;
+		public bool switchRight;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -39,7 +43,20 @@ namespace StarterAssets
 			JumpInput(value.isPressed);
 		}
 
-		public void OnSprint(InputValue value)
+		public void OnAttack(InputValue value)
+		{
+			AttackInput(value.isPressed);
+		}
+        public void OnSwitchLeft(InputValue value)
+        {
+            SwitchLeftInput(value.isPressed);
+        }
+
+        public void OnSwitchRight(InputValue value)
+        {
+            SwitchRightInput(value.isPressed);
+        }
+        public void OnSprint(InputValue value)
 		{
 			SprintInput(value.isPressed);
 		}
@@ -60,8 +77,22 @@ namespace StarterAssets
 		{
 			jump = newJumpState;
 		}
+		
+		public void AttackInput(bool newAttackState)
+		{
+			attack = newAttackState;
+		}
+        public void SwitchLeftInput(bool newSwitchLeftState)
+        {
+            switchLeft = newSwitchLeftState;
+        }
 
-		public void SprintInput(bool newSprintState)
+        public void SwitchRightInput(bool newSwitchRightState)
+        {
+            switchRight = newSwitchRightState;
+        }
+
+        public void SprintInput(bool newSprintState)
 		{
 			sprint = newSprintState;
 		}

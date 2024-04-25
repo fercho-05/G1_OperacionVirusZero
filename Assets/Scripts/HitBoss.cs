@@ -6,9 +6,9 @@ using UnityEngine;
 public class HitBoss : MonoBehaviour
 {
     public int damage;
-    // Start is called before the first frame update
+	// Start is called before the first frame update
 
-    void OnTriggerEnter(Collider coll)
+	void OnTriggerEnter(Collider coll)
     {
         if (coll.CompareTag("Player"))
         {
@@ -16,15 +16,5 @@ public class HitBoss : MonoBehaviour
         }
        
        
-    }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
